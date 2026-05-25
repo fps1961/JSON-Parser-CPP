@@ -3,4 +3,12 @@ project(JSON_Parser_CPP)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(JSON_Parser_CPP main.cpp)
+add_executable(JSON_Parser_CPP src/main.cpp
+        src/Token.h
+        src/JsonValue.h
+        src/Lexer.cpp
+        src/Lexer.h
+        src/Parser.cpp
+        src/Parser.h
+        src/JsonException.h
+        src/LexException.h)
