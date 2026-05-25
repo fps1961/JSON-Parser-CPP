@@ -67,6 +67,8 @@ std::vector<Token> Lexer::tokenize()
 
     while (!isEnd())
     {
+        const auto line_number = this->line_number;
+        const auto col = this->col;
         switch (auto value = advance())
         {
         case ('{'):
@@ -82,7 +84,7 @@ std::vector<Token> Lexer::tokenize()
             continue;
         default:
             const std::string error_message{
-                std::format("Unexpected character '{}' at line {}, col {}", value, line_number, col - 1)
+                std::format("Unexpected character '{}' at line {}, col {}", value, line_number, col)
             };
             throw LexException(error_message);
         }
