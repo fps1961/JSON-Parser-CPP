@@ -28,3 +28,36 @@ struct Token
     int col;
     std::optional<std::string> value;
 };
+
+inline std::string tokenTypeToString(const TokenType token_type)
+{
+    switch (token_type)
+    {
+    case TokenType::LBRACE:
+        return "{";
+    case TokenType::RBRACE:
+        return "}";
+    case TokenType::LBRACKET:
+        return "[";
+    case TokenType::RBRACKET:
+        return "]";
+    case TokenType::COLON:
+        return ":";
+    case TokenType::COMMA:
+        return ",";
+    case TokenType::STRING:
+        return "STRING";
+    case TokenType::BOOLEAN:
+        return "BOOLEAN";
+    case TokenType::END_OF_FILE:
+        return "END OF FILE";
+    case TokenType::NULL_TYPE:
+        return "NULL";
+    case TokenType::NUMBER:
+        return "NUMBER";
+    default:
+        return "INVALID";
+    }
+}
+
+
