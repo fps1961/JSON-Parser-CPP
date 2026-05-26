@@ -11,4 +11,5 @@ add_executable(JSON_Parser_CPP src/main.cpp
         src/Parser.cpp
         src/Parser.h
         src/JsonException.h
-        src/LexException.h)
+        src/LexException.h
+        src/ParseException.h)
