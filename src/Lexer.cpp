@@ -84,7 +84,7 @@ std::vector<Token> Lexer::tokenize()
             continue;
         default:
             const std::string error_message{
-                std::format("Unexpected character '{}' at line {}, col {}", value, line_number, col)
+                std::format("Unexpected character '{}' at line {}, col {}\n", value, line_number, col)
             };
             throw LexException(error_message);
         }
@@ -92,7 +92,7 @@ std::vector<Token> Lexer::tokenize()
 
     if (token_list.empty())
     {
-        throw LexException("No Data Provided!");
+        throw LexException("No Data Provided!\n");
     }
 
     token_list.emplace_back(TokenType::END_OF_FILE, line_number, col);

@@ -25,7 +25,7 @@ int main(const int argc, char** argv)
 {
     if (argc == 1)
     {
-        throw std::runtime_error("No File Provided");
+        throw std::runtime_error("No File Provided\n");
     }
 
     try

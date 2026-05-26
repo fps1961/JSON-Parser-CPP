@@ -20,7 +20,7 @@ JsonValue Parser::parseValue()
 {
     if (peek().type != TokenType::LBRACE)
     {
-        throw ParseException(std::format("Unexpected token '{}' at line {}, col {} - expected a value",
+        throw ParseException(std::format("Unexpected token '{}' at line {}, col {} - expected a value\n",
                                          tokenTypeToString(peek().type), peek().line_number, peek().col));
     }
 
@@ -50,7 +50,7 @@ Token Parser::peek() const
 {
     if (current_index >= token_list.size())
     {
-        throw ParseException("Unexpected end of input");
+        throw ParseException("Unexpected end of input\n");
     }
 
     return token_list[current_index];
@@ -68,7 +68,7 @@ Token Parser::consume(const TokenType expected_token_type)
 
     if (token.type != expected_token_type)
     {
-        throw ParseException(std::format("Expected '{}' token type but got '{}' at line {}, col {}",
+        throw ParseException(std::format("Expected '{}' token type but got '{}' at line {}, col {}\n",
                                          tokenTypeToString(expected_token_type), tokenTypeToString(token.type),
                                          token.line_number, token.col));
     }
