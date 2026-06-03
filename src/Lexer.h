@@ -21,10 +21,10 @@ public:
 private:
     char advance();
 
-    char peek() const;
-    char peekNext() const;
-    bool isEnd() const;
-    bool isNextEnd() const;
+    [[nodiscard]] char peek() const;
+    [[nodiscard]] char peekNext() const;
+    [[nodiscard]] bool isEnd() const;
+    [[nodiscard]] bool isNextEnd() const;
 
     std::string data;
     int line_number{1};

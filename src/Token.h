@@ -24,8 +24,8 @@ enum class TokenType
 struct Token
 {
     TokenType type{};
-    int line_number;
-    int col;
+    int line_number{};
+    int col{};
     std::optional<std::string> value;
 };
 

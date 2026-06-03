@@ -27,6 +27,6 @@ private:
     JsonArray parseArray();
     std::string parseString();
 
-    Token peek() const;
+    [[nodiscard]] Token peek() const;
     Token consume(TokenType expected_token_type);
 };
