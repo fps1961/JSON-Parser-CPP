@@ -82,6 +82,15 @@ std::vector<Token> Lexer::tokenize()
         case ('\t'):
         case (' '):
             continue;
+        case ('"'):
+            token_list.emplace_back(TokenType::STRING, line_number, col, readString());
+            break;
+        case (':'):
+            token_list.emplace_back(TokenType::COLON, line_number, col);
+            break;
+        case (','):
+            token_list.emplace_back(TokenType::COMMA, line_number, col);
+            break;
         default:
             const std::string error_message{
                 std::format("Unexpected character '{}' at line {}, col {}\n", value, line_number, col)
@@ -98,4 +107,60 @@ std::vector<Token> Lexer::tokenize()
     token_list.emplace_back(TokenType::END_OF_FILE, line_number, col);
 
     return token_list;
+}
+
+std::string Lexer::readString()
+{
+    std::string value{};
+
+    while (!isEnd() && peek() != '"')
+    {
+        const auto curr_char = advance();
+
+        if (curr_char == '\\')
+        {
+            switch (const auto escape_char = advance())
+            {
+            case ('n'):
+                value += '\n';
+                break;
+            case ('t'):
+                value += '\t';
+                break;
+            case ('r'):
+                value += '\r';
+                break;
+            case ('b'):
+                value += '\b';
+                break;
+            case ('f'):
+                value += '\f';
+                break;
+            case ('"'):
+                value += '\"';
+                break;
+            case ('\\'):
+                value += '\\';
+                break;
+            case ('/'):
+                value += '/';
+                break;
+            default:
+                throw LexException(std::format("Unknown Escape Sequence Encountered:{}", escape_char));
+            }
+        }
+        else
+        {
+            value += curr_char;
+        }
+    }
+
+    if (isEnd())
+    {
+        throw LexException("Expected '\"' when reading string");
+    }
+
+    advance();
+
+    return value;
 }

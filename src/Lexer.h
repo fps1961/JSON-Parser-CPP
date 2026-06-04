@@ -20,6 +20,7 @@ public:
 
 private:
     char advance();
+    [[nodiscard]] std::string readString();
 
     [[nodiscard]] char peek() const;
     [[nodiscard]] char peekNext() const;
@@ -29,5 +30,5 @@ private:
     std::string data;
     int line_number{1};
     int col{0};
-    int current_index{0};
+    size_t current_index{0};
 };

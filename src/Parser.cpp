@@ -18,20 +18,55 @@ JsonValue Parser::parse()
 
 JsonValue Parser::parseValue()
 {
-    if (peek().type != TokenType::LBRACE)
+    if (peek().type == TokenType::STRING)
     {
-        throw ParseException(std::format("Unexpected token '{}' at line {}, col {} - expected a value\n",
-                                         tokenTypeToString(peek().type), peek().line_number, peek().col));
+        return parseString();
+    }
+    if (peek().type == TokenType::LBRACE)
+    {
+        return parseObject();
     }
 
-    return parseObject();
+    return Null{};
 }
 
 JsonObject Parser::parseObject()
 {
     consume(TokenType::LBRACE);
+
+    JsonObject json_object{};
+
+    while (peek().type != TokenType::RBRACE)
+    {
+        if (peek().type == TokenType::STRING)
+        {
+            auto string_value = parseString();
+
+            consume(TokenType::COLON);
+
+            json_object.emplace(string_value, parseValue());
+
+            if (peek().type == TokenType::COMMA)
+            {
+                consume(TokenType::COMMA);
+                if (const auto expected_string = peek(); expected_string.type != TokenType::STRING)
+                {
+                    throw ParseException(std::format(
+                        "Expected String Token Type after Comma but got {} type at line {} col {}!",
+                        tokenTypeToString(expected_string.type), expected_string.line_number, expected_string.col));
+                }
+            }
+        }
+        else
+        {
+            throw ParseException(std::format("Expected String Token Type but got {} type at line {} col {}!",
+                                             tokenTypeToString(peek().type), peek().line_number, peek().col));
+        }
+    }
+
     consume(TokenType::RBRACE);
-    return {};
+
+    return json_object;
 }
 
 
@@ -43,7 +78,8 @@ JsonArray Parser::parseArray()
 
 std::string Parser::parseString()
 {
-    return {};
+    const auto value = consume(TokenType::STRING).value.value_or("");
+    return value;
 }
 
 Token Parser::peek() const
