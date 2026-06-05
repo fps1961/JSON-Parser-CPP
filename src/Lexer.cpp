@@ -91,6 +91,13 @@ std::vector<Token> Lexer::tokenize()
         case (','):
             token_list.emplace_back(TokenType::COMMA, line_number, col);
             break;
+        case ('t'):
+        case ('f'):
+            token_list.emplace_back(TokenType::BOOLEAN, line_number, col, readKeyword(value));
+            break;
+        case ('n'):
+            token_list.emplace_back(TokenType::NULL_TYPE, line_number, col, readKeyword(value));
+            break;
         default:
             const std::string error_message{
                 std::format("Unexpected character '{}' at line {}, col {}\n", value, line_number, col)
@@ -115,9 +122,7 @@ std::string Lexer::readString()
 
     while (!isEnd() && peek() != '"')
     {
-        const auto curr_char = advance();
-
-        if (curr_char == '\\')
+        if (const auto curr_char = advance(); curr_char == '\\')
         {
             switch (const auto escape_char = advance())
             {
@@ -164,3 +169,33 @@ std::string Lexer::readString()
 
     return value;
 }
+
+std::string Lexer::readKeyword(const char starting_char)
+{
+    std::string keyword(1, starting_char);
+
+    keyword += readAlpha();
+
+
+    if (keyword == "true" || keyword == "false" || keyword == "null")
+    {
+        return keyword;
+    }
+
+    throw LexException(std::format("Unexpected value {} in json at line {}, col {}", keyword, line_number, col));
+}
+
+std::string Lexer::readAlpha()
+{
+    std::string value{};
+
+    while (isalpha(peek()))
+    {
+        value += advance();
+    }
+
+    return value;
+}
+
+
+

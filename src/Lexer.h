@@ -20,7 +20,11 @@ public:
 
 private:
     char advance();
+
     [[nodiscard]] std::string readString();
+    [[nodiscard]] std::string readKeyword(char starting_char);
+    [[nodiscard]] std::string readAlpha();
+
 
     [[nodiscard]] char peek() const;
     [[nodiscard]] char peekNext() const;
