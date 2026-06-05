@@ -7,12 +7,15 @@ build() {
     cmake --build cmake-build-debug-wsl
 }
 
-test_step_one() {
+run_tests() {
+    local step_dir=$1
+    local step_name=$2
+
     local passed=0
     local failed=0
 
-    for file in tests/step1/*json; do
-        ./$binary_path $file
+    for file in "$step_dir"/*json; do
+        ./"$binary_path" "$file"
         local actual=$?
 
         local expected=0
@@ -30,11 +33,12 @@ test_step_one() {
         fi
     done
 
-    echo "Step One Results:"
+    echo "$step_name Results:"
     echo "Failed: $failed"
     echo "Passed: $passed"
 
 }
 
 build
-test_step_one
+run_tests tests/step1 "Step 1"
+run_tests tests/step2 "Step 2"
